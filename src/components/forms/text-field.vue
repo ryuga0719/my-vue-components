@@ -1,11 +1,12 @@
 <template>
   <input
-    :class="[
-      'text-base bg-red-500',
-      { 'bg-green-500': intent === 'primary' },
-      { 'bg-blue-500': intent === 'secondary' },
-    ]"
-    type="text"
+    :class="
+      twMerge(textFieldStyles({ intent, size, margin, fullWidth, hasError }))
+    "
+    :type="type"
+    :pattern="pattern"
+    :value="modelValue"
+    @input="onInput"
   />
 </template>
 
@@ -19,9 +20,10 @@ export const patternVariants = {
 </script>
 
 <script setup lang="ts">
+import { twMerge } from "tailwind-merge";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const textField = cva(
+const textFieldStyles = cva(
   "outline-0 pl-4 pr-11 text-base bg-color-surface-primary border-color-border-medium-emphasis focus:shadow-sm disabled:bg-color-surface-disabled disabled:text-color-text-disabled",
   {
     variants: {
@@ -61,7 +63,7 @@ const textField = cva(
   }
 );
 
-type TextFieldProps = VariantProps<typeof textField>;
+type TextFieldProps = VariantProps<typeof textFieldStyles>;
 
 interface Props {
   intent?: TextFieldProps["intent"];
@@ -86,6 +88,11 @@ withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{ (e: "update:modelValue", value: string): void }>();
+
+const onInput = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  emits("update:modelValue", target.value);
+};
 </script>
 
 <style scoped lang="scss"></style>

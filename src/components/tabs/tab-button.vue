@@ -1,6 +1,10 @@
 <template>
   <button
     :class="twMerge(tabButtonStyles({ intent, isActive }))"
+    role="tab"
+    type="button"
+    :aria-selected="isActive || false"
+    :aria-controls="controls"
     @click="onTabChanged"
   >
     <slot />
@@ -33,6 +37,7 @@ interface Props {
   intent?: TabButtonProps["intent"];
   isActive?: TabButtonProps["isActive"];
   tabId: string;
+  controls: string;
   modelValue?: string;
 }
 
@@ -40,6 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
   intent: "primary",
   isActive: false,
   tabId: "",
+  controls: "",
   modelValue: "",
 });
 

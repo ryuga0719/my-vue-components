@@ -14,18 +14,26 @@
 
     <!-- Tab -->
     <section>
-      <h2 class="mt-8 mb-6 text-xl font-semibold">Tab</h2>
+      <h2 id="tab" class="mt-8 mb-6 text-xl font-semibold">Tab</h2>
       <div>
-        <div class="flex">
+        <TabButtonWrapper labeled-by="tab">
           <TabButton
             v-for="(tab, index) in tabInfo"
             :key="index"
+            :id="'tab-button-' + tab.tabId"
             :is-active="tab.tabId === currentTab"
             :tab-id="tab.tabId"
+            :controls="'tab-panel-' + tab.tabId"
             v-model="currentTab"
             >{{ tab.label }}</TabButton
           >
-        </div>
+        </TabButtonWrapper>
+        <TabPanel
+          :id="'tab-panel-' + currentTab"
+          :labeled-by="'tab-button-' + currentTab"
+        >
+          {{ currentTab }}
+        </TabPanel>
       </div>
     </section>
   </div>
@@ -35,10 +43,16 @@
 import { ref } from "vue";
 import TextField from "./components/forms/text-field.vue";
 import TabButton from "./components/tabs/tab-button.vue";
+import TabButtonWrapper from "./components/tabs/tab-button-wrapper.vue";
+import TabPanel from "./components/tabs/tab-panel.vue";
 
-const currentTab = ref("1");
+const currentTab = ref("0");
 
 const tabInfo = [
+  {
+    tabId: "0",
+    label: "0",
+  },
   {
     tabId: "1",
     label: "1",
@@ -46,10 +60,6 @@ const tabInfo = [
   {
     tabId: "2",
     label: "2",
-  },
-  {
-    tabId: "3",
-    label: "3",
   },
 ];
 </script>
